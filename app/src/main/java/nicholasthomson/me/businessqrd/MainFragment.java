@@ -3,6 +3,7 @@ package nicholasthomson.me.businessqrd;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -23,7 +24,7 @@ import java.net.URL;
 public class MainFragment extends Fragment implements View.OnClickListener {
 
 
-    private static class DownloadQRImage extends AsyncTask<Void, Void, Boolean> {
+    private static class DownloadQRImage extends AsyncTask<Void, Void, Bitmap> {
 
         private Activity activity;
 
@@ -32,20 +33,19 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         }
 
         @Override
-        protected Boolean doInBackground(Void... voids) {
-            try {
-                URL imageUrl = new URL("http://google.com/favicon.ico");
-                Bitmap bitmap = BitmapFactory.decodeStream((InputStream) imageUrl.getContent());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return true;
+        protected Bitmap doInBackground(Void... voids) {
+            FetchQRCode fetch = new FetchQRCode();
+            fetch.downloadBitmap();
+            return fetch.getQRBitMap();
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            Toast.makeText(activity, "Asyn completed!", Toast.LENGTH_LONG).show();
-            System.out.println("ASYN DONE");
+        protected void onPostExecute(Bitmap b) {
+            //Toast.makeText(activity, "Asyn completed!", Toast.LENGTH_LONG).show();
+            //System.out.println("ASYN DONE");
+            Intent i = new Intent(activity, QRCodeDisplay.class);
+            i.putExtra("BitmapImage", b);
+            activity.startActivity(i);
         }
     }
 
