@@ -1,15 +1,53 @@
 package nicholasthomson.me.businessqrd;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
+
+import java.io.InputStream;
+import java.net.URL;
 
 /**
  * Created by Nick on 11/15/14.
  */
-public class MainFragment extends Fragment {
+
+public class MainFragment extends Fragment implements View.OnClickListener {
+
+
+    private static class DownloadQRImage extends AsyncTask<Void, Void, Boolean> {
+
+        private Activity activity;
+
+        public DownloadQRImage(Activity activity) {
+            this.activity = activity;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            try {
+                URL imageUrl = new URL("http://google.com/favicon.ico");
+                Bitmap bitmap = BitmapFactory.decodeStream((InputStream) imageUrl.getContent());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            Toast.makeText(activity, "Asyn completed!", Toast.LENGTH_LONG).show();
+            System.out.println("ASYN DONE");
+        }
+    }
 
     /**
      * The fragment argument representing the section number for this
@@ -38,7 +76,16 @@ public class MainFragment extends Fragment {
         Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        final Button button = (Button) rootView.findViewById(R.id.create_tag_button);
+        button.setOnClickListener(this);
         return rootView;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.create_tag_button) {
+            new DownloadQRImage(getActivity()).execute();
+        }
     }
 
 }
