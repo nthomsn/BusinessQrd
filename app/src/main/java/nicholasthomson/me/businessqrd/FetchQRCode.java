@@ -14,10 +14,12 @@ import java.security.SecureRandom;
 public class FetchQRCode {
 
     Bitmap qrCode = null;
+    String generated = null;
 
     private String generateRandom(int length) {
         SecureRandom random = new SecureRandom();
-        return new BigInteger(length, random).toString(32);
+        generated = new BigInteger(length, random).toString(32);
+        return generated;
     }
 
     public void downloadBitmap() {
@@ -29,6 +31,10 @@ public class FetchQRCode {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public String getGenerated() {
+        return generated;
     }
 
     Bitmap getQRBitMap() {

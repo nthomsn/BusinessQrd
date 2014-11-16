@@ -36,13 +36,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         protected Bitmap doInBackground(Void... voids) {
             FetchQRCode fetch = new FetchQRCode();
             fetch.downloadBitmap();
+            ServerHandle handle = new ServerHandle(fetch.getGenerated());
+            handle.submitQR();
             return fetch.getQRBitMap();
         }
 
         @Override
         protected void onPostExecute(Bitmap b) {
-            //Toast.makeText(activity, "Asyn completed!", Toast.LENGTH_LONG).show();
-            //System.out.println("ASYN DONE");
             Intent i = new Intent(activity, QRCodeDisplay.class);
             i.putExtra("BitmapImage", b);
             activity.startActivity(i);
