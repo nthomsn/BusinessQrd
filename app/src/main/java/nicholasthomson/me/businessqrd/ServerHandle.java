@@ -26,16 +26,20 @@ public class ServerHandle {
         }
     }
 
-    public void requestContact() {
+    public boolean requestContact() {
         if (authString != null) {
-            System.out.println("WE ARE TRYING TO ACCESS THE SERVERS!!!!!!!");
-            Webb webb = Webb.create();
-            Response<String> stringResponse = webb.get("http://104.236.53.130:8888/get/")
-                    .param("authString", authString)
-                    .param("name", "Nick")
-                    .ensureSuccess()
-                    .asString();
-            System.out.println(stringResponse.getBody());
+            try {
+                Webb webb = Webb.create();
+                Response<String> stringResponse = webb.get("http://104.236.53.130:8888/get/")
+                        .param("authString", authString)
+                        .param("name", "Nick")
+                        .ensureSuccess()
+                        .asString();
+                System.out.println(stringResponse.getBody());
+            } catch (Exception e) {
+                return false;
+            }
         }
+        return true;
     }
 }

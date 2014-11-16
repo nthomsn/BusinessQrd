@@ -54,16 +54,24 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     public static class RequestContact extends AsyncTask<String, Void, Boolean> {
 
+        private Activity activity;
+
+        public RequestContact(Activity activity) {
+            this.activity = activity;
+        }
+
         @Override
         protected Boolean doInBackground(String... strings) {
             ServerHandle handle = new ServerHandle(strings[0]);
-            handle.requestContact();
-            return true;
+            boolean success = handle.requestContact();
+            return success;
         }
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-
+            if (!aBoolean) {
+                Toast.makeText(activity, "Could not find waldo :(", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -114,7 +122,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null) {
-            new RequestContact().execute(scanResult.getContents());
+            new RequestContact(getActivity()).execute(scanResult.getContents());
         }
     }
 
