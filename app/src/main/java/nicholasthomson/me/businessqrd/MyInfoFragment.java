@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,18 +64,24 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-
+        switch(requestCode) {
             case 1:
-                if (data != null) {
-                    selectedImageUri = data.getData();
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inJustDecodeBounds = true;
-                    Bitmap btemp = BitmapFactory.decodeFile(selectedImageUri.getPath());
-                    /// use btemp Image file
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-                }
-                break;
+                Cursor cursor = view.getContext().getContentResolver().query(
+                        selectedImage, filePathColumn, null, null, null);
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String filePath = cursor.getString(columnIndex);
+                cursor.close();
+
+
+                Bitmap yourSelectedImage = BitmapFactory.decodeFile(filePath);
+                ((ImageView) view.findViewById(R.id.addPhoto)).setImageBitmap(
+                        Bitmap.createScaledBitmap(yourSelectedImage, 230, 230, false)
+                );
         }
     }
 
