@@ -14,11 +14,11 @@ public class ServerHandle {
 
     public void submitQR() {
         if (authString != null) {
+            System.out.println("WE ARE TRYING TO ACCESS THE SERVERS!!!!!!!");
             Webb webb = Webb.create();
-            webb.get("http:/[2620:0:2820:a0b:449:4603:9726:774d]:8888/post/")
+            webb.get("http://104.236.53.130:8888/post/")
                     .param("authString", authString)
                     .param("name", "Nick")
-                    .param("param3", "c")
                     .ensureSuccess()
                     .asVoid();
         }
