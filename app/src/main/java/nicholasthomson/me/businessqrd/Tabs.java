@@ -97,9 +97,9 @@ public class Tabs extends Activity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            if (position == 1) {
+            if (position == 0) {
                 return MainFragment.newInstance(position + 1);
-            } else if (position == 2) {
+            } else if (position == 1) {
                 return MyInfoFragment.newInstance(position + 1);
             } else {
                 return PlaceholderFragment.newInstance(position + 1);
@@ -109,7 +109,7 @@ public class Tabs extends Activity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 2;
         }
 
         @Override

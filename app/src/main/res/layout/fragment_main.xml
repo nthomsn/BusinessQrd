@@ -20,19 +20,26 @@ tools:context=".Tabs$PlaceholderFragment">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <Button
+        <ImageView
             android:id="@+id/create_tag_button"
-            android:text="Create Tag"
             android:layout_width="wrap_content"
-            android:padding="30dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/qrcode"
+            android:clickable="true"
+            android:scaleX="1"
+            android:scaleY="1"
+            android:padding="30dp"/>
 
-        <Button
+
+        <ImageView
             android:id="@+id/scan_tag_button"
-            android:text="Scan Tag"
-            android:padding="30dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/camera"
+            android:clickable="true"
+            android:scaleX="1"
+            android:scaleY="1"
+            android:padding="30dp"/>
 
     </LinearLayout>
 

@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -117,8 +118,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        final Button button1 = (Button) rootView.findViewById(R.id.create_tag_button);
-        final Button button2 = (Button) rootView.findViewById(R.id.scan_tag_button);
+        final ImageView button1 = (ImageView) rootView.findViewById(R.id.create_tag_button);
+        final ImageView button2 = (ImageView) rootView.findViewById(R.id.scan_tag_button);
         button1.setOnClickListener(this);
         button2.setOnClickListener(this);
         return rootView;
