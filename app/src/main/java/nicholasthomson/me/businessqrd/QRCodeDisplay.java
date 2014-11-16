@@ -17,6 +17,7 @@ public class QRCodeDisplay extends Activity {
         Bitmap b = getIntent().getParcelableExtra("BitmapImage");
         ImageView v = (ImageView) this.findViewById(R.id.QRCodeImageView);
         v.setImageBitmap(b);
+
     }
 
 

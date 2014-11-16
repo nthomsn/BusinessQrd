@@ -1,5 +1,8 @@
 package nicholasthomson.me.businessqrd;
 
+import android.content.Intent;
+import android.provider.ContactsContract;
+
 import org.json.JSONObject;
 
 import nicholasthomson.me.businessqrd.Webb.Response;
@@ -15,31 +18,56 @@ public class ServerHandle {
         this.authString = authString;
     }
 
-    public void submitQR() {
+    public void submitQR(JSONObject json) {
         if (authString != null) {
             Webb webb = Webb.create();
             webb.get("http://104.236.53.130:8888/post/")
                     .param("authString", authString)
-                    .param("name", "Nick")
+                    .param("name", json.toString())
                     .ensureSuccess()
                     .asVoid();
         }
     }
 
-    public boolean requestContact() {
+    public JSONObject requestContact(JSONObject json) {
         if (authString != null) {
             try {
                 Webb webb = Webb.create();
                 Response<String> stringResponse = webb.get("http://104.236.53.130:8888/get/")
                         .param("authString", authString)
-                        .param("name", "Nick")
+                        .param("name", json.toString())
                         .ensureSuccess()
                         .asString();
                 System.out.println(stringResponse.getBody());
+                JSONObject response = new JSONObject(stringResponse.getBody());
+                return response;
+
+
             } catch (Exception e) {
-                return false;
+                e.printStackTrace();
+                return null;
             }
         }
-        return true;
+        return null;
+    }
+    //added heartbeat
+    public JSONObject heartBeat() {
+        if (authString != null) {
+            try {
+                Webb webb = Webb.create();
+                Response<String> stringResponse = webb.get("http://104.236.53.130:8888/get/")
+                        .param("authString", authString)
+                        .ensureSuccess()
+                        .asString();
+                System.out.println(stringResponse.getBody());
+                JSONObject response = new JSONObject(stringResponse.getBody());
+                return response;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return null;
     }
 }

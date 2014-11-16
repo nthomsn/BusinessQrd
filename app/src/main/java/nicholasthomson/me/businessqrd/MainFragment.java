@@ -8,11 +8,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -40,7 +45,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             FetchQRCode fetch = new FetchQRCode();
             fetch.downloadBitmap();
             ServerHandle handle = new ServerHandle(fetch.getGenerated());
-            handle.submitQR();
+            Tabs tabs = (Tabs) activity;
+            handle.submitQR(tabs.getInfo());
             return fetch.getQRBitMap();
         }
 
@@ -63,8 +69,25 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         @Override
         protected Boolean doInBackground(String... strings) {
             ServerHandle handle = new ServerHandle(strings[0]);
-            boolean success = handle.requestContact();
-            return success;
+            Tabs tabs = (Tabs) activity;
+            JSONObject json = handle.requestContact(tabs.getInfo());
+            if (json == null) {
+                return false;
+            }
+            Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
+            intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+            try {
+                json = new JSONObject(json.getString("name"));
+                intent.putExtra(ContactsContract.Intents.Insert.NAME, json.getString("First Name")
+                    + " " +json.getString("Last Name"));
+                intent.putExtra(ContactsContract.Intents.Insert.PHONE, json.getString("Phone Number"));
+                intent.putExtra(ContactsContract.Intents.Insert.EMAIL, json.getString("Email Address"));
+                intent.putExtra(ContactsContract.Intents.Insert.POSTAL, json.getString("Address"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            activity.startActivity(intent);
+            return true;
         }
 
         @Override

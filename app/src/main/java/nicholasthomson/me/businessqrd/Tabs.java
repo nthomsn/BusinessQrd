@@ -19,21 +19,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 import nicholasthomson.me.businessqrd.zxing.IntentIntegrator;
 import nicholasthomson.me.businessqrd.zxing.IntentResult;
 
 
 public class Tabs extends Activity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v13.app.FragmentStatePagerAdapter}.
-     */
+
     SectionsPagerAdapter mSectionsPagerAdapter;
+    JSONObject info;
+
+    public void setInfo(JSONObject info) {
+        this.info = info;
+    }
+
+    public JSONObject getInfo() {
+        return info;
+    }
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -95,6 +99,8 @@ public class Tabs extends Activity {
             // Return a PlaceholderFragment (defined as a static inner class below).
             if (position == 1) {
                 return MainFragment.newInstance(position + 1);
+            } else if (position == 2) {
+                return MyInfoFragment.newInstance(position + 1);
             } else {
                 return PlaceholderFragment.newInstance(position + 1);
             }
