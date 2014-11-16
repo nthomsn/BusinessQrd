@@ -55,11 +55,13 @@ public class ServerHandle {
         if (authString != null) {
             try {
                 Webb webb = Webb.create();
-                Response<String> stringResponse = webb.get("http://104.236.53.130:8888/get/")
+                Response<String> stringResponse = webb.get("http://104.236.53.130:8888/heartbeat/")
                         .param("authString", authString)
                         .ensureSuccess()
                         .asString();
-                System.out.println(stringResponse.getBody());
+                if (stringResponse.getBody().length() < 10) {
+                    return null;
+                }
                 JSONObject response = new JSONObject(stringResponse.getBody());
                 return response;
 

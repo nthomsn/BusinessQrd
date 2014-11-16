@@ -35,6 +35,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private static class DownloadQRImage extends AsyncTask<Void, Void, Bitmap> {
 
         private Activity activity;
+        private String authString;
 
         public DownloadQRImage(Activity activity) {
             this.activity = activity;
@@ -45,6 +46,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             FetchQRCode fetch = new FetchQRCode();
             fetch.downloadBitmap();
             ServerHandle handle = new ServerHandle(fetch.getGenerated());
+            authString = fetch.getGenerated();
             Tabs tabs = (Tabs) activity;
             handle.submitQR(tabs.getInfo());
             return fetch.getQRBitMap();
@@ -54,6 +56,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         protected void onPostExecute(Bitmap b) {
             Intent i = new Intent(activity, QRCodeDisplay.class);
             i.putExtra("BitmapImage", b);
+            i.putExtra("authString", authString);
             activity.startActivity(i);
         }
     }
@@ -74,19 +77,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             if (json == null) {
                 return false;
             }
-            Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
-            intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
-            try {
-                json = new JSONObject(json.getString("name"));
-                intent.putExtra(ContactsContract.Intents.Insert.NAME, json.getString("First Name")
-                    + " " +json.getString("Last Name"));
-                intent.putExtra(ContactsContract.Intents.Insert.PHONE, json.getString("Phone Number"));
-                intent.putExtra(ContactsContract.Intents.Insert.EMAIL, json.getString("Email Address"));
-                intent.putExtra(ContactsContract.Intents.Insert.POSTAL, json.getString("Address"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            activity.startActivity(intent);
+
+            activity.startActivity((new NewContact()).getContactIntent(json));
             return true;
         }
 
