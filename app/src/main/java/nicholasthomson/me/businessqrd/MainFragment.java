@@ -17,6 +17,9 @@ import android.widget.Toast;
 import java.io.InputStream;
 import java.net.URL;
 
+import nicholasthomson.me.businessqrd.zxing.IntentIntegrator;
+import nicholasthomson.me.businessqrd.zxing.IntentResult;
+
 /**
  * Created by Nick on 11/15/14.
  */
@@ -76,8 +79,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        final Button button = (Button) rootView.findViewById(R.id.create_tag_button);
-        button.setOnClickListener(this);
+        final Button button1 = (Button) rootView.findViewById(R.id.create_tag_button);
+        final Button button2 = (Button) rootView.findViewById(R.id.scan_tag_button);
+        button1.setOnClickListener(this);
+        button2.setOnClickListener(this);
         return rootView;
     }
 
@@ -85,6 +90,17 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         if (view.getId() == R.id.create_tag_button) {
             new DownloadQRImage(getActivity()).execute();
+        } else if (view.getId() == R.id.scan_tag_button) {
+            IntentIntegrator integrator = new IntentIntegrator(this);
+            integrator.initiateScan();
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if (scanResult != null) {
+            ServerHandle handle = new ServerHandle(scanResult.getContents());
+            handle.requestContact();
         }
     }
 

@@ -1,5 +1,8 @@
 package nicholasthomson.me.businessqrd;
 
+import org.json.JSONObject;
+
+import nicholasthomson.me.businessqrd.Webb.Response;
 import nicholasthomson.me.businessqrd.Webb.Webb;
 
 /**
@@ -21,6 +24,24 @@ public class ServerHandle {
                     .param("name", "Nick")
                     .ensureSuccess()
                     .asVoid();
+        }
+    }
+
+    public void requestContact() {
+        if (authString != null) {
+            System.out.println("WE ARE TRYING TO ACCESS THE SERVERS!!!!!!!");
+            Webb webb = Webb.create();
+            /*webb.get("http://104.236.53.130:8888/get/")
+                    .param("authString", authString)
+                    .param("name", "Bob")
+                    .ensureSuccess()
+                    .asVoid();*/
+            webb.get("http://104.236.53.130:8888/post/")
+                    .param("authString", authString)
+                    .param("name", "Bob")
+                    .ensureSuccess()
+                    .asVoid();
+            //System.out.println(res.toString());
         }
     }
 }
