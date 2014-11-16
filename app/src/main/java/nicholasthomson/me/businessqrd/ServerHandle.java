@@ -17,7 +17,6 @@ public class ServerHandle {
 
     public void submitQR() {
         if (authString != null) {
-            System.out.println("WE ARE TRYING TO ACCESS THE SERVERS!!!!!!!");
             Webb webb = Webb.create();
             webb.get("http://104.236.53.130:8888/post/")
                     .param("authString", authString)
@@ -31,17 +30,12 @@ public class ServerHandle {
         if (authString != null) {
             System.out.println("WE ARE TRYING TO ACCESS THE SERVERS!!!!!!!");
             Webb webb = Webb.create();
-            /*webb.get("http://104.236.53.130:8888/get/")
+            Response<String> stringResponse = webb.get("http://104.236.53.130:8888/get/")
                     .param("authString", authString)
-                    .param("name", "Bob")
+                    .param("name", "Nick")
                     .ensureSuccess()
-                    .asVoid();*/
-            webb.get("http://104.236.53.130:8888/post/")
-                    .param("authString", authString)
-                    .param("name", "Bob")
-                    .ensureSuccess()
-                    .asVoid();
-            //System.out.println(res.toString());
+                    .asString();
+            System.out.println(stringResponse.getBody());
         }
     }
 }

@@ -52,6 +52,21 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    public static class RequestContact extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            ServerHandle handle = new ServerHandle(strings[0]);
+            handle.requestContact();
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+
+        }
+    }
+
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -99,8 +114,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null) {
-            ServerHandle handle = new ServerHandle(scanResult.getContents());
-            handle.requestContact();
+            new RequestContact().execute(scanResult.getContents());
         }
     }
 
