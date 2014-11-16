@@ -1,7 +1,13 @@
 package nicholasthomson.me.businessqrd;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +20,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import nicholasthomson.me.businessqrd.R;
+import nicholasthomson.me.businessqrd.zxing.IntentIntegrator;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MyInfoFragment extends Fragment {
+public class MyInfoFragment extends Fragment implements View.OnClickListener {
     /**
      * The fragment argument representing the section number for this
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
     private View view;
+    private Uri selectedImageUri;
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -46,7 +54,40 @@ public class MyInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_fragment_my_info, container, false);
         view = rootView;
+        view.findViewById(R.id.addPhoto).setOnClickListener(this);
         return rootView;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+
+            case 1:
+                if (data != null) {
+                    selectedImageUri = data.getData();
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = true;
+                    Bitmap btemp = BitmapFactory.decodeFile(selectedImageUri.getPath());
+                    /// use btemp Image file
+
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.addPhoto) {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+
+            startActivityForResult(
+                    Intent.createChooser(intent, "Complete action using"),
+                    1);
+        }
     }
 
     public void updateInfo() {

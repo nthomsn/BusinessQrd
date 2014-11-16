@@ -16,7 +16,6 @@
         android:gravity="center"
         android:id="@+id/infoLinearLayout">
 
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,6 +24,14 @@
             android:textSize="24dp"
             android:id="@+id/editText2"
             android:layout_gravity="center_horizontal" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/man"
+            android:id="@+id/addPhoto"
+            android:clickable="true"/>
 
         <EditText
             android:layout_width="match_parent"
