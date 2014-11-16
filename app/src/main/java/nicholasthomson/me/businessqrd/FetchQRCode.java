@@ -25,8 +25,7 @@ public class FetchQRCode {
     public void downloadBitmap() {
 
         try {
-            URL imageUrl = new URL("http://chart.apis.google.com/chart?cht=qr" +
-                    "&chs=300x300&chl=" + generateRandom(60) + "&chld=H|0");
+            URL imageUrl = new URL("https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" + generateRandom(60));
             qrCode = BitmapFactory.decodeStream((InputStream) imageUrl.getContent());
         } catch (Exception e) {
             e.printStackTrace();
